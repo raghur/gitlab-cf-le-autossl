@@ -222,5 +222,5 @@ if [[ -z ${CF_AUTH_USR} || -z ${CF_AUTH_KEY} ]]; then
 fi
 
 HANDLER=$1; shift;
-echo "Hook:" $HANDLER
-type $HANDLER &>/dev/null && $HANDLER $@ || echo "$HANDLER not found"
+# echo "Hook:" $HANDLER
+type $HANDLER &>/dev/null && $HANDLER $@ || echo ""

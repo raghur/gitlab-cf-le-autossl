@@ -4,8 +4,8 @@
 # ex:
 # 10853369 mathease.rraghur.in
 # 3341547 rraghur.in www.rraghur.in blog.rraghur.in
-
 [[ -r /data/secrets ]] && source /data/secrets
+./dehydrated --register --accept-terms
 awk '/^[0-9]+/ { 
     project=$1; domain=$2; 
     for (i=3; i <=NF; i++) {domain=domain" "$i}

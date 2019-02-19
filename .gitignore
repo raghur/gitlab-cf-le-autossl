@@ -3,3 +3,4 @@ certs/
 chains/
 secrets
 certs.txt
+config_local

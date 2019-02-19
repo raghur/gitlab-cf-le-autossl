@@ -1,12 +1,13 @@
 = Gitlab Pages SSL cert renewal with CloudFlare DNS
 
-Docker image Gitlab Pages served on custom domains Let's Encrypt SSL certs for  using `dns-01` challenge using the CloudFlare API
+Fully automatic renewal of Let's Encrypt SSL certs for Gitlab Pages using LetsEncrypt and CloudFlare API
 
 Use this when:
 
-. You have gitlab pages project
-. You'd like to serve them on a custom domain - say example.com, blog.example.com
-. You'd like to have those domains use Let's encrypt SSL certs.
+. You have a static site hosted on gitlab pages
+. You'd like to serve your site on a custom domain - say example.com or blog.example.com
+. You'd like to have those sites protected with use Let's encrypt SSL certs.
+. You'd like to have the certs automatically renewed before expiry
 
 == What you need:
 

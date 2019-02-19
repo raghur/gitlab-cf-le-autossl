@@ -6,5 +6,6 @@ RUN apk update && apk add bash bind-tools curl \
 
 VOLUME /app
 WORKDIR /app
+ADD config deploy.sh dehydrated gitlab-cert-renew.sh hook.sh /app/
 
-CMD /bin/bash
+CMD ./gitlab-cert-renew.sh

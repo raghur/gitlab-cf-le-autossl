@@ -46,7 +46,7 @@ CHALLENGETYPE="dns-01"
 #DOMAINS_D=
 
 # Base directory for account key, generated certificates and list of domains (default: $SCRIPTDIR -- uses config directory if undefined)
-#BASEDIR=$SCRIPTDIR
+BASEDIR=/data
 
 # File containing the list of domains to request certificates for (default: $BASEDIR/domains.txt)
 #DOMAINS_TXT="${BASEDIR}/domains.txt"
@@ -85,7 +85,7 @@ CHALLENGETYPE="dns-01"
 #
 # BASEDIR and WELLKNOWN variables are exported and can be used in an external program
 # default: <unset>
-HOOK=${BASEDIR}/hook.sh
+HOOK=${SCRIPTDIR}/hook.sh
 
 # Chain clean_challenge|deploy_challenge arguments together into one hook call per certificate (default: no)
 #HOOK_CHAIN="no"

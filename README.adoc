@@ -1,0 +1,99 @@
+= Gitlab Pages SSL cert renewal with CloudFlare DNS
+
+Docker image Gitlab Pages served on custom domains Let's Encrypt SSL certs for  using `dns-01` challenge using the CloudFlare API
+
+Use this when:
+
+. You have gitlab pages project
+. You'd like to serve them on a custom domain - say example.com, blog.example.com
+. You'd like to have those domains use Let's encrypt SSL certs.
+
+== What you need:
+
+. Docker
+. Your DNS should be managed by Cloudflare - you'll need your CloudFlare email and Global API key from the cloudflare
+console
++
+[TIP]
+.You don't have to be tied to your registrar!
+====
+Even if you have registered your domain elsewhere (Godaddy, namecheap etc), you can still 
+ manage it with Cloudflare and use their API for programmatic 
+access to your DNS records. Create a free cloudflare account, then once you've 
+added your site, you need to go back to your to your registrar, and put in the 
+cloudflare DNS servers there (instead of the registrar assigned ones). It's really simple!
+
+====
+
+. You should already have created alternate domains on which you want to serve gitlab pages [Settings->Pages]
+. Project Id - from each gitlab project's overview page.
+. A Gitlab Personal access token - from your profile page, create a personal access token with scope as 'API'
+    * https://gitlab.com/profile/personal_access_tokens[Personal access tokens]
+
+
+== Getting Started:
+
+. Create an empty folder - say `gitlab-certs`
++
+[source,shell]
+----
+mkdir gitlab-certs
+cd gitlab-certs
+----
+. Create a `secrets` file with your secrets
++
+[source,shell]
+----
+gitlab-certs> cat > secrets
+export GLTOKEN=gitlab-token
+export CF_AUTH_USR=cloudflare-user
+export CF_AUTH_KEY=cloudflare-global-api-key
+export CONTACT_EMAIL=you@somewhere.com
+----
+. Create a `certs.txt` file with projects you'd like to manage SSL certs for
+    * Keep in mind that you need to have created custom domains for these earlier in Gitlab
+Here's an example
++
+[source,shell]
+----
+gitlab-certs> cat certs.txt
+
+3341547 rraghur.in www.rraghur.in blog.rraghur.in
+# 1231233 other.domain.in
+----
+. Run the docker image
++
+[source,shell]
+----
+gitlab-certs> docker run -it --rm  -v `pwd`:/data rraghur/gitlab-cf-le-autossl
+# INFO: Using main config file /app/config
++ Account already registered!
+# INFO: Using main config file /app/config
+
+Processing rraghur.in with alternative names: www.rraghur.in blog.rraghur.in
+
+ + Checking domain name(s) of existing cert... unchanged.
+ + Checking expire date of existing cert...
+ + Valid till May 20 04:51:11 2019 GMT (Longer than 30 days). Skipping renew!
+
+----
+
+== Scheduled runs
+
+You can put the docker command in your `/etc/cron.monthly` folder and it should auto renew
+your certs whenever there's less than 30 days from expiry.
+
+
+== Security
+
+Protect your certs folder - ideally `chmod -R 700 *`. Also, `secrets` file - since it has keys to your
+Cloudflare account and your Gitlab account!
+
+
+== Credits
+
+This project builds upon the following:
+
+. https://dehydrated.io/[Dehydrated]
+. https://github.com/RoliSoft/LetsEncrypt-CloudFlare-Hook[LetsEncrypt-CloudFlare-Hook]
+
